@@ -1,24 +1,25 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AnimatePresence } from "framer-motion"
+
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Volcanoes from './pages/Volcanoes';
+import Volcano from './pages/Volcano';
+import Home from './pages/Home';
+
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path='/' element={ <Home />}/>
+        <Route path='/volcanoes' element={ <Volcanoes />}/>
+        <Route path='/volcano/:id' element={ <Volcano />}/>
+        <Route path='/login' element={<Login />}/>
+        <Route path='/register' element={<Register />}/>
+      </Routes>
+    </Router>
   );
 }
 
