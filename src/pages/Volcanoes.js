@@ -1,31 +1,42 @@
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion";
 
-import volcano_light from "../assets/volcano_light.jpg"
+import volcano_light from "../assets/volcano_light_2.jpg"
+
+import transition from "../utils/transition"
 
 export default function Volcanoes () {
-
     const navigate = useNavigate()
 
-    const transition = { duration: 0.6, ease: [0.43, 0.13, 0.23, 0.96], delay: 0.6};
-
     return (
-        <div className="home-container">
-            <motion.div 
-                className="home-info"
-                initial={{width: "100vw"}}
-                animate={{width: "50vw"}}
-                transition={transition} >
-                <button onClick={() => navigate("/volcano/1")}>
-                    click me
-                </button>
+        <div class="h-screen w-screen flex flex-nowrap">
+            <motion.div
+                class="h-full basis-1/2"
+                initial={{flexBasis: "100%"}}
+                animate={{flexBasis: "70%"}}
+                exit={{flexBasis: "100%"}}
+                transition={transition()}>
+                    <button onClick={() => navigate("/volcano/1")}>
+                        click me
+                    </button>
             </motion.div>
             <motion.div 
-                initial={{opacity: 0}}
-                animate={{opacity: 1}}
-                transition={transition} 
-                className="home-picture">
-                <img src={volcano_light} alt="volcano" />
+                class="h-full basis-1/2 overflow-hidden"
+                // Framer animation props
+                initial={{flexBasis: 0, opacity: .5}}
+                animate={{flexBasis: "30%", opacity: 1}}
+                exit={{opacity: .5, flexBasis: 0}}
+                transition={transition()}> 
+                    <motion.img 
+                        style={{objectPosition: "55% 0"}}
+                        class="object-cover h-full w-full scale-100" 
+                        src={volcano_light} 
+                        alt="volcano"
+                        initial={{}}
+                        animate={{}}
+                        exit={{}}
+                        transition={transition()}
+                        />
             </motion.div>
         </div>
     )
