@@ -8,14 +8,14 @@ export default function Volcano () {
 
     return (
         <motion.div 
-            class="bg-volcano_light_3 bg-cover w-screen h-screen flex justify-center"
+            className="bg-volcano_light_3 bg-cover w-screen h-screen flex justify-center"
             initial={{opacity: 0}}
             animate={{opacity: 1, transition: transition()}}
             exit={{opacity: 0, transition: transition(.5)}}
             >
             <motion.div
                 style={{height: "700px", width: "800px"}}
-                class="bg-white"
+                className="bg-white pt-10"
                 initial={{height: "0px"}}
                 animate={{height: "700px", transition: transition(.5)}}
                 exit={{height: 0, transition: transition()}}

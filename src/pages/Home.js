@@ -9,16 +9,16 @@ export default function Home () {
     const navigate = useNavigate()
 
     return (
-        <div class="h-screen w-screen flex flex-nowrap">
+        <div className="h-screen w-screen flex flex-nowrap">
             <motion.div 
-                class="h-full basis-1/2 overflow-hidden"
+                className="h-full basis-1/2 overflow-hidden"
                 // Framer animation props
                 initial={{opacity: .5, flexBasis: 0}}
                 animate={{opacity: 1, flexBasis: "50%"}}
                 exit={{opacity: .5, flexBasis: 0}}
                 transition={transition()}> 
                     <motion.img 
-                        class="object-cover h-full w-full scale-150" 
+                        className="object-cover h-full w-full scale-150" 
                         src={volcano_light} 
                         alt="volcano"
                         initial={{}}
@@ -28,7 +28,7 @@ export default function Home () {
                         />
             </motion.div>
             <motion.div
-                class="h-full basis-1/2"
+                className=" pt-10 h-full basis-1/2"
                 exit={{flexBasis: "100%"}}
                 transition={transition()}>
                     <button onClick={() => navigate("/volcanoes")}>

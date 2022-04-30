@@ -9,9 +9,9 @@ export default function Volcanoes () {
     const navigate = useNavigate()
 
     return (
-        <div class="h-screen w-screen flex flex-nowrap">
+        <div className="h-screen w-screen flex flex-nowrap">
             <motion.div
-                class="h-full basis-1/2"
+                className="pt-10 h-full basis-1/2"
                 initial={{flexBasis: "100%"}}
                 animate={{flexBasis: "70%"}}
                 exit={{flexBasis: "100%"}}
@@ -21,7 +21,7 @@ export default function Volcanoes () {
                     </button>
             </motion.div>
             <motion.div 
-                class="h-full basis-1/2 overflow-hidden"
+                className="h-full basis-1/2 overflow-hidden"
                 // Framer animation props
                 initial={{flexBasis: 0, opacity: .5}}
                 animate={{flexBasis: "30%", opacity: 1}}
@@ -29,7 +29,7 @@ export default function Volcanoes () {
                 transition={transition()}> 
                     <motion.img 
                         style={{objectPosition: "55% 0"}}
-                        class="object-cover h-full w-full scale-100" 
+                        className="object-cover h-full w-full scale-100" 
                         src={volcano_light} 
                         alt="volcano"
                         initial={{}}

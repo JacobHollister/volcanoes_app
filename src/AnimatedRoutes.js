@@ -13,6 +13,7 @@ export default function AnimatedRoutes() {
 
     return (
         <AnimatePresence exitBeforeEnter>
+            
             <Routes location={location} key={location.pathname}>
                 <Route path='/' element={ <Home />}/>
                 <Route path='/volcanoes' element={ <Volcanoes />}/>
