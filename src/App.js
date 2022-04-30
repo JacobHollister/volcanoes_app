@@ -1,5 +1,4 @@
 import { BrowserRouter as Router} from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion';
 
 import AnimatedRoutes from './AnimatedRoutes';
 import Navbar from './components/Navbar';
