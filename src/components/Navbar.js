@@ -13,12 +13,12 @@ export default function Navbar() {
         <AnimatePresence>
             { !isVisible && (
             <motion.div 
-                className="h-11 w-screen content-center fixed bg-slate-50 z-10 flex justify-center border-2 border-slate-200"
+                className="px-3 h-11 w-screen content-center fixed bg-slate-50 z-10 flex justify-center border-2 border-slate-200"
                 initial={{transform: "translateY(-100%)"}}
                 animate={{transform: "translateY(0%)", transition: transition(1.3)}}
                 exit={{transform: "translateY(-100%)", transition: transition(0)}}
                 transition={transition()}>
-                    <ul className="flex items-center font-medium" style={{width: "800px"}}>
+                    <ul className="flex items-center font-medium pl-1" style={{width: "800px"}}>
                         <li className="mr-6">
                             <Link to="/">Home</Link>
                         </li>

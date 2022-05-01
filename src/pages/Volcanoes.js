@@ -1,32 +1,128 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { motion } from "framer-motion";
-
-import volcano_light from "../assets/volcano_light_2.jpg"
+import { AnimatePresence, motion } from "framer-motion";
 
 import transition from "../utils/transition"
+
+import { useAPI } from "../hooks/useAPI";
+
+import volcano_light from "../assets/volcano_light_2.jpg"
+import VolcanoList from "../components/VolcanoList";
 
 export default function Volcanoes () {
     const navigate = useNavigate()
 
+    const {loading, data: countries, error} = useAPI('/countries')
+
+    const [selectedCountry, setSelectedCountry] = useState(null)
+    const [selectedDistance, setSelectedDistance] = useState(null)
+    const [showTable, setShowTable] = useState(false)
+
+    const countryChangeHandler = (e) => {
+        setSelectedCountry(e.target.value)
+        console.log(e.target.value)
+    }
+
+    const distanceChangeHandler = (e) => {
+        setSelectedDistance(e.target.value)
+        console.log(e.target.value)
+    }
+
+    let selectOptions
+    
+    if ((!loading || !error) && countries.length > 0) {
+        selectOptions = countries.map((country) => {
+            return (
+                <option value={country} key={country}>{country}</option>
+            )
+        })
+    }
+
     return (
         <div className="h-screen w-screen flex flex-nowrap">
             <motion.div
-                className="pt-10 h-full basis-1/2"
+                className="pt-16 h-full basis-1/2"
                 initial={{flexBasis: "100%"}}
-                animate={{flexBasis: "70%"}}
-                exit={{flexBasis: "100%"}}
-                transition={transition()}>
-                    <button onClick={() => navigate("/volcano/1")}>
-                        click me
-                    </button>
+                animate={{flexBasis: "70%", transition: transition(0)}}
+                exit={{flexBasis: "100%", transition: transition(.6)}}
+                >
+                    <motion.div
+                        className="flex flex-col h-3/4 w-full"
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1, transition: transition(.6)}}
+                        exit={{opacity: 0, transition: transition(0)}}
+                        >
+                            <AnimatePresence>
+                                <h1 className="text-center font-eczar text-5xl my-8">Volcano List</h1>
+                                {selectOptions ? (
+                                    <select 
+                                    onChange={(e) => {countryChangeHandler(e)}}
+                                    name={'country'} 
+                                    id={"country"} 
+                                    defaultValue={"default"}
+                                    className="mx-auto mb-4 bg-gray-50 border border-gray-400 text-gray-900 text-md rounded focus:ring-blue-500 focus:border-blue-500 block w-72 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option disabled value="default"> -- Country -- </option>
+                                        {selectOptions}
+                                    </select>
+                                ) : (
+                                    null
+                                )} 
+                                { selectedCountry ? (
+                                    <motion.div
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1, transition: transition(0)}}
+                                    exit={{opacity: 0, transition: transition(0)}}
+                                    className="h-14"
+                                    >
+                                        <select
+                                        className="mx-auto mb-4 bg-gray-50 border border-gray-400 text-gray-900 text-md rounded focus:ring-blue-500 focus:border-blue-500 block w-72 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        onChange={(e) => distanceChangeHandler(e)}
+                                        name={"distanceToPopulation"}
+                                        id={"distanceToPopulation"}
+                                        defaultValue={"default"}
+                                        >
+                                            <option disabled value="default"> -- Closest Population Distance -- </option>
+                                            <option value={"0km"}>none</option>
+                                            <option value={"5km"}>5km</option>
+                                            <option value={"10km"}>10km</option>
+                                            <option value={"30km"}>30km</option>
+                                            <option value={"100km"}>100km</option>
+                                        </select>
+                                    </motion.div>
+                                ) : (
+                                    null
+                                )}
+                                { selectedDistance ? (
+                                    <motion.div
+                                    className="h-14 flex justify-center"
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1, transition: transition(0)}}
+                                    exit={{opacity: 0, transition: transition(0)}}
+                                    >
+                                        <button
+                                        className=" w-72 h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                        onClick={() => setShowTable(true)}
+                                        >Search</button>
+                                    </motion.div>
+                                ) : (
+                                    null
+                                )}
+                                { showTable ? (
+                                    <VolcanoList country={selectedCountry} distance={selectedDistance}/>
+                                ) : (
+                                    null
+                                )}
+                            </AnimatePresence>
+                    </motion.div>
             </motion.div>
             <motion.div 
                 className="h-full basis-1/2 overflow-hidden"
                 // Framer animation props
                 initial={{flexBasis: 0, opacity: .5}}
-                animate={{flexBasis: "30%", opacity: 1}}
-                exit={{opacity: .5, flexBasis: 0}}
-                transition={transition()}> 
+                animate={{flexBasis: "30%", opacity: 1, transition: transition(0)}}
+                exit={{opacity: .5, flexBasis: 0,  transition: transition(.6)}}
+                > 
                     <motion.img 
                         style={{objectPosition: "55% 0"}}
                         className="object-cover h-full w-full scale-100" 
