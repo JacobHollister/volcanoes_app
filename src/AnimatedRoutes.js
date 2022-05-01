@@ -14,6 +14,8 @@ export default function AnimatedRoutes() {
             
             <Routes location={location} key={location.pathname}>
                 <Route path='/' element={ <Home />}/>
+                <Route path='/login' element={ <Home />}/>
+                <Route path='/register' element={ <Home />}/>
                 <Route path='/volcanoes' element={ <Volcanoes />}/>
                 <Route path='/volcano/:id' element={ <Volcano />}/>
             </Routes>

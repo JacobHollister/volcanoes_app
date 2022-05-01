@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { AnimatePresence, motion} from "framer-motion"
 
 import LoginForm from "../components/LoginForm"
@@ -7,10 +7,16 @@ import RegisterForm from "../components/RegisterForm"
 import transition from "../utils/transition"
 
 import volcano_light from "../assets/volcano_light_1.jpg"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function Home () {
     const navigate = useNavigate()
+    const location = useLocation()
+
+    useEffect(() => {
+        if(location.pathname === '/login') showLoginForm()
+        if(location.pathname === '/register') showRegisterForm()
+    },[location])
 
     const [actionContent, setActionContent] = useState('home')
     const [loginVisible, setLoginVisible] = useState(false)
