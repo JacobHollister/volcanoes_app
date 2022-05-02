@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { Map, Marker } from "pigeon-maps"
 
 
-import { useAPI } from '../hooks/useAPI';
+import { useFetchVolcano } from '../hooks/useAPI';
 
 import transition from "../utils/transition"
 
@@ -11,7 +11,7 @@ export default function Volcano () {
     const navigate = useNavigate()
     const volcanoID = useParams().id
 
-    const {loading, data: volcanoData, error} = useAPI(`/volcano/${volcanoID}`)
+    const {loading, data: volcanoData, error} = useFetchVolcano(volcanoID)
 
     console.log(volcanoData)
 

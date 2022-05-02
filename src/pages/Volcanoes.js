@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import transition from "../utils/transition"
 
-import { useAPI } from "../hooks/useAPI";
+import { useFetchCountries } from "../hooks/useAPI";
 
 import volcano_light from "../assets/volcano_light_2.jpg"
 import VolcanoList from "../components/VolcanoList";
@@ -12,7 +12,7 @@ import VolcanoList from "../components/VolcanoList";
 export default function Volcanoes () {
     const navigate = useNavigate()
 
-    const {loading, data: countries, error} = useAPI('/countries')
+    const {loading, data: countries, error} = useFetchCountries('/countries')
 
     const [selectedCountry, setSelectedCountry] = useState(null)
     const [selectedDistance, setSelectedDistance] = useState(null)

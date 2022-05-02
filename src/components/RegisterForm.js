@@ -1,4 +1,4 @@
-//import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -7,16 +7,53 @@ import transition from "../utils/transition"
 export default function RegisterForm ({close, isVisible}) {
     const navigate = useNavigate()
 
+    const [ loading, setLoading ] = useState(false)
+    const [ error, setError ] = useState(false)
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    })
+
+    const {email, password} = formData
 
     const registerHandler = (e) => {
         e.preventDefault()
-        close()
-        navigate('/volcanoes')
+        const options = {
+            method: "POST",
+            headers: { accept: "application/json", "Content-Type": "application/json"},
+            body: JSON.stringify(formData)
+        }
+        const url = "http://sefdb02.qut.edu.au:3001/user/register"
+        setLoading(true)
+        fetch(url, options)
+            .then(res =>
+                res.json()
+            )
+            .then(res => 
+            {   
+                console.log(res)
+                setLoading(true)
+                if(res.error === true){
+                    setError(res.message)
+                } else if (res.message === 'User created'){
+                    console.log('user created')
+                    close()
+                    navigate('/login')
+                }
+            })
     }
 
     const cancelHandler = (e) => {
         e.preventDefault()
         close()
+    }
+
+    const onChange = (e) => {
+        setError(false)
+        setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: e.target.value,
+        }))
     }
 
     const form = (
@@ -37,8 +74,10 @@ export default function RegisterForm ({close, isVisible}) {
                 </label>
                 <input 
                     required
+                    onChange={(e) => onChange(e)}
                     type="email" 
                     id="email" 
+                    value={email}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                     />
             </div>
@@ -50,8 +89,10 @@ export default function RegisterForm ({close, isVisible}) {
                     </label>
                 <input 
                     required
+                    onChange={(e) => onChange(e)}
                     type="password" 
                     id="password" 
+                    value={password}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                     />
             </div>

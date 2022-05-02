@@ -6,7 +6,7 @@ import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import 'ag-grid-community/dist/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'; // Optional theme CSS
 
-import { useAPI } from '../hooks/useAPI';
+import { useFetchVolcanoes } from '../hooks/useAPI';
 
 import transition from '../utils/transition';
 
@@ -20,7 +20,7 @@ export default function VolcanoList ({country, populatedWithin}) {
         { headerName: "subregion", field: "subregion"}
     ], [])
     
-    const {loading, data: volcanoData, error} = useAPI(`/volcanoes?country=${country}&${populatedWithin !== "none" ?`populatedWithin=${populatedWithin}` : ""}`)
+    const {loading, data: volcanoData, error} = useFetchVolcanoes(country, populatedWithin)
 
     return (
         <motion.div
