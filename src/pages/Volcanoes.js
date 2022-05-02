@@ -16,16 +16,20 @@ export default function Volcanoes () {
 
     const [selectedCountry, setSelectedCountry] = useState(null)
     const [selectedDistance, setSelectedDistance] = useState(null)
+    const [tableData, setTableData] = useState({country: "", populatedWithin: ""})
     const [showTable, setShowTable] = useState(false)
 
     const countryChangeHandler = (e) => {
         setSelectedCountry(e.target.value)
-        console.log(e.target.value)
     }
 
     const distanceChangeHandler = (e) => {
         setSelectedDistance(e.target.value)
-        console.log(e.target.value)
+    }
+
+    const searchHandler = () => {
+        setTableData({country: selectedCountry, populatedWithin: selectedDistance})
+        setShowTable(true)
     }
 
     let selectOptions
@@ -52,7 +56,7 @@ export default function Volcanoes () {
                         animate={{opacity: 1, transition: transition(.6)}}
                         exit={{opacity: 0, transition: transition(0)}}
                         >
-                            <AnimatePresence>
+                            <AnimatePresence exitBeforeEnter>
                                 <h1 className="text-center font-eczar text-5xl my-8">Volcano List</h1>
                                 {selectOptions ? (
                                     <select 
@@ -70,6 +74,7 @@ export default function Volcanoes () {
                                 )} 
                                 { selectedCountry ? (
                                     <motion.div
+                                    key="distanceSelect"
                                     initial={{opacity: 0}}
                                     animate={{opacity: 1, transition: transition(0)}}
                                     exit={{opacity: 0, transition: transition(0)}}
@@ -83,7 +88,7 @@ export default function Volcanoes () {
                                         defaultValue={"default"}
                                         >
                                             <option disabled value="default"> -- Closest Population Distance -- </option>
-                                            <option value={"0km"}>none</option>
+                                            <option value={"none"}>none</option>
                                             <option value={"5km"}>5km</option>
                                             <option value={"10km"}>10km</option>
                                             <option value={"30km"}>30km</option>
@@ -95,21 +100,46 @@ export default function Volcanoes () {
                                 )}
                                 { selectedDistance ? (
                                     <motion.div
+                                    key="searchButton"
                                     className="h-14 flex justify-center"
                                     initial={{opacity: 0}}
                                     animate={{opacity: 1, transition: transition(0)}}
                                     exit={{opacity: 0, transition: transition(0)}}
                                     >
                                         <button
-                                        className=" w-72 h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                        onClick={() => setShowTable(true)}
+                                        className="w-72 h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                        onClick={() => searchHandler()}
                                         >Search</button>
                                     </motion.div>
                                 ) : (
                                     null
                                 )}
                                 { showTable ? (
-                                    <VolcanoList country={selectedCountry} distance={selectedDistance}/>
+                                    <>
+                                        <div className="pt-6 pl-8"
+                                        >
+                                            <motion.h2 
+                                                className="font-eczar text-xl"
+                                                initial={{opacity: 0}}
+                                                animate={{opacity: 1, transition: transition(0)}}
+                                                exit={{opacity: 0, transition: transition(0)}}
+                                                >
+                                                    Showing results for 
+                                                </motion.h2>
+                                            <motion.h2 
+                                                key={tableData.country + tableData.populatedWithin}
+                                                className="font-eczar text-xl"
+                                                initial={{opacity: 0}}
+                                                animate={{opacity: 1, transition: transition(0)}}
+                                                exit={{opacity: 0, transition: transition(0)}}
+                                                >
+                                                    <span><i>Volcanoes in <strong>{tableData.country} </strong></i></span>
+                                                    <span><i>{(tableData.populatedWithin !== "none") ? "with people living within " : null}</i></span>
+                                                    <span><i>{(tableData.populatedWithin !== "none") ? <strong>{tableData.populatedWithin}</strong> : null}</i></span>
+                                                </motion.h2>
+                                        </div>
+                                        <VolcanoList country={tableData.country} populatedWithin={tableData.populatedWithin}/>
+                                    </>
                                 ) : (
                                     null
                                 )}
