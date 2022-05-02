@@ -116,7 +116,7 @@ export default function Volcanoes () {
                                 )}
                                 { showTable ? (
                                     <>
-                                        <div className="pt-6 pl-8"
+                                        <div className="pt-6 pl-6"
                                         >
                                             <motion.h2 
                                                 className="font-eczar text-xl"

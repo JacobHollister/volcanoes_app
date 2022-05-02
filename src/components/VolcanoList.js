@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { motion } from 'framer-motion';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import 'ag-grid-community/dist/styles/ag-grid.css'; // Core grid CSS, always needed
@@ -11,6 +12,8 @@ import transition from '../utils/transition';
 
 
 export default function VolcanoList ({country, populatedWithin}) {
+    const navigate = useNavigate(0)
+
     const columnDefs = useMemo(() => [
         { headerName: "name", field: "name"},
         { headerName: "region", field: "region"},
@@ -18,7 +21,6 @@ export default function VolcanoList ({country, populatedWithin}) {
     ], [])
     
     const {loading, data: volcanoData, error} = useAPI(`/volcanoes?country=${country}&${populatedWithin !== "none" ?`populatedWithin=${populatedWithin}` : ""}`)
-
 
     return (
         <motion.div
@@ -31,6 +33,7 @@ export default function VolcanoList ({country, populatedWithin}) {
                 loading
             ) : (
                 <AgGridReact
+                    onRowClicked={(e) => navigate(`/volcano/${e.data.id}`)}
                     columnDefs={columnDefs}
                     rowData={volcanoData}
                     pagination
