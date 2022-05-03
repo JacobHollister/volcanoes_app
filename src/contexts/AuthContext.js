@@ -1,14 +1,14 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-const token = localStorage.getItem('user').token
+const user = JSON.parse(localStorage.getItem('user'))
 
 const initialState = {
             loading: false,
-            loggedIn: false,
+            loggedIn: user ? true : false,
             registerSuccess: false,
             error: false,
             message: "null",
-            token: token
+            token: user ? user.token : null
         }
 
 const AuthContext = createContext()
@@ -100,7 +100,7 @@ export function AuthProvider({children}) {
                     setError(true)
                     setMessage(res.message)
                 } else {
-                    localStorage.setItem('user', JSON.stringify(res))
+                    localStorage.setItem('token', JSON.stringify(res))
                     setLoggedIn(true)
                 }
                 setLoading(true)
@@ -108,7 +108,7 @@ export function AuthProvider({children}) {
     }
 
     return (
-        <AuthContext.Provider value={{...authState, login, register, setError }}>
+        <AuthContext.Provider value={{...authState, login, register, logout, setError }}>
             {children}
         </AuthContext.Provider>
 

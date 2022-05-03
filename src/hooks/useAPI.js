@@ -1,32 +1,8 @@
 import { useFetch } from "./useFetch"
 
-const token = localStorage.getItem("Token")
-
-// export const useLogin = ( credentials ) => {
-//     const options = {
-//         method: "POST",
-//         headers: { accept: "application/json", "Content-Type": "application/json"},
-//         body: JSON.stringify(credentials)
-//     }
-//     const url = "/user/login"
-
-//     return useFetch(url, options)
-// }
-
-// export const useRegister = ( credentials ) => {
-//     const options = {
-//         method: "POST",
-//         headers: { accept: "application/json", "Content-Type": "application/json"},
-//         body: JSON.stringify(credentials)
-//     }
-//     const url = "/user/register"
-
-//     return useFetch(url, options)
-// }
-
-export const useFetchVolcano = ( volcanoID ) => {
+export const useFetchVolcano = ( volcanoID, token ) => {
     const url = `/volcano/${volcanoID}`
-    const headers = { Authorization: `Bearer ${token}`}
+    const headers = token ? { headers: {Authorization: `Bearer ${token}`}} : null
 
     return useFetch(url, headers)
 }

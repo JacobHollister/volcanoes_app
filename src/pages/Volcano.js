@@ -1,17 +1,39 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Map, Marker } from "pigeon-maps"
-
+import { Bar } from 'react-chartjs-2';
 
 import { useFetchVolcano } from '../hooks/useAPI';
+import { useAuth } from "../contexts/AuthContext";
 
 import transition from "../utils/transition"
+
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
 
 export default function Volcano () {
     const navigate = useNavigate()
     const volcanoID = useParams().id
+    const { loggedIn, token} = useAuth()
 
-    const {loading, data: volcanoData, error} = useFetchVolcano(volcanoID)
+    const {loading, data: volcanoData, error} = useFetchVolcano(volcanoID, token)
 
     console.log(volcanoData)
 
@@ -72,25 +94,52 @@ export default function Volcano () {
                                             <Marker width={50} anchor={[parseFloat(volcanoData.latitude), parseFloat(volcanoData.longitude)]} />
                                         </Map>
                                     </div>
-                                    {/* populationWithin */}
-                                    <div
-                                    className="basis-1/3 mt-10 h-64"
-                                    >
-                                        <h4 className="font-eczar text-xl mb-2"><strong>Nearby Population</strong></h4>
-                                        <h5 className="font-eczar text-lg font-semibold pl-1 leading-tight">Within 5km</h5>
-                                        <p className="font-eczar text-lg pl-2 leading-tight mb-1">{volcanoData.population_5km ? volcanoData.population_5km : "----"}</p>
-                                        <h5 className="font-eczar text-lg font-semibold pl-1 leading-tight">Within 10km</h5>
-                                        <p className="font-eczar text-lg pl-2 leading-tight mb-1">{volcanoData.population_10km ? volcanoData.population_10km : "----"}</p>
-                                        <h5 className="font-eczar text-lg font-semibold pl-1 leading-tight">Within 30km</h5>
-                                        <p className="font-eczar text-lg pl-2 leading-tight mb-1">{volcanoData.population_30km ? volcanoData.population_30km : "----"}</p>
-                                        <h5 className="font-eczar text-lg font-semibold pl-1 leading-tight">Within 100km</h5>
-                                        <p className="font-eczar text-lg pl-2 leading-tight mb-1">{volcanoData.population_100km ? volcanoData.population_100km : "----"}</p>
-                                    </div>
-                                    {/* Chart */}
-                                    <div
-                                    className="basis-2/3"
-                                    >
-                                       chart here 
+                                    <div className="relative flex w-full">
+                                        { !loggedIn ? (
+                                            <>
+                                                <div className="absolute top-0 bottom-0 left-0 right-0 bg-white opacity-60">
+                                                </div>
+                                            </>
+                                        ) : (
+                                            null
+                                        )}
+                                        {/* populationWithin */}
+                                        <div
+                                        className="basis-1/3 pt-20 h-80 my-auto"
+                                        >
+                                            <h4 className="font-eczar text-xl mb-2"><strong>Nearby Population</strong></h4>
+                                            <h5 className="font-eczar text-lg font-semibold pl-1 leading-tight">Within 5km</h5>
+                                            <p className="font-eczar text-lg pl-2 leading-tight mb-1">{volcanoData.population_5km ? volcanoData.population_5km : "----"}</p>
+                                            <h5 className="font-eczar text-lg font-semibold pl-1 leading-tight">Within 10km</h5>
+                                            <p className="font-eczar text-lg pl-2 leading-tight mb-1">{volcanoData.population_10km ? volcanoData.population_10km : "----"}</p>
+                                            <h5 className="font-eczar text-lg font-semibold pl-1 leading-tight">Within 30km</h5>
+                                            <p className="font-eczar text-lg pl-2 leading-tight mb-1">{volcanoData.population_30km ? volcanoData.population_30km : "----"}</p>
+                                            <h5 className="font-eczar text-lg font-semibold pl-1 leading-tight">Within 100km</h5>
+                                            <p className="font-eczar text-lg pl-2 leading-tight mb-1">{volcanoData.population_100km ? volcanoData.population_100km : "----"}</p>
+                                        </div>
+                                        {/* Chart */}
+                                        <div
+                                        className="basis-2/3 pt-5 px-5 mt-5"
+                                        >
+                                            <div className="h-full">
+                                                <Bar
+                                                    options={{maintainAspectRatio: false}}
+                                                    data={{
+                                                        labels: ["5km", "10km", "30km", "100km"],
+                                                        datasets: [{
+                                                            label: "Populate living near volcano",
+                                                            data: [
+                                                                volcanoData.population_5km,
+                                                                volcanoData.population_10km,
+                                                                volcanoData.population_30km,
+                                                                volcanoData.population_100km
+                                                            ],
+                                                            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                                                        }]
+                                                    }}
+                                                    />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </>
@@ -100,17 +149,3 @@ export default function Volcano () {
         </motion.div>
     )
 }
-
-// country: "Armenia"
-// elevation: 11801
-// last_eruption: "1900 BCE"
-// latitude: "40.2830"
-// longitude: "45.0000"
-// name: "Ghegham Volcanic Ridge"
-// region: "Mediterranean and Western Asia"
-// subregion: "Western Asia"
-// summit: 3597
-//  "population_5km": 3597,
-//   "population_10km": 9594,
-//   "population_30km": 117805,
-//   "population_100km": 4071152
