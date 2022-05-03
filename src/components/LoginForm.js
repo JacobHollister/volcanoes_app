@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import transition from "../utils/transition";
-import { useLogin } from "../hooks/useAPI";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginForm ({close, isVisible}) {
     const navigate = useNavigate()
+    const {error, loggedIn, login, message, setError} = useAuth()
 
-    const [ loading, setLoading ] = useState(false)
-    const [ error, setError ] = useState(false)
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     })
     const {email, password} = formData
+
+    useEffect(() => {
+        if(loggedIn) {
+            close()
+            navigate('/volcanoes')
+        }
+    }, [loggedIn, close, navigate])
 
     const onChange = (e) => {
         setError(false)
@@ -26,30 +32,7 @@ export default function LoginForm ({close, isVisible}) {
 
     const loginHandler = (e) => {
         e.preventDefault()
-        const options = {
-            method: "POST",
-            headers: { accept: "application/json", "Content-Type": "application/json"},
-            body: JSON.stringify(formData)
-        }
-        const url = "http://sefdb02.qut.edu.au:3001/user/login"
-        setLoading(true)
-        fetch(url, options)
-            .then(res =>
-                res.json()
-            )
-            .then(res => 
-            {   
-                if(res.error === true){
-                    setError(res.message)
-                } else (
-                    localStorage.setItem('user', JSON.stringify(res))
-                )
-                setLoading(true)
-            })
-            .finally(() => {
-                close()
-                navigate('/volcanoes')
-            })
+        login(formData)
     }
 
     const cancelHandler = (e) => {
@@ -112,18 +95,18 @@ export default function LoginForm ({close, isVisible}) {
                 </button>
             </div>
             
-                {error ? (
-                    <motion.div 
-                    className="bg-red-200 mt-5 p-1 rounded-sm"
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1, transition: transition()}}
-                    exit={{opacity: 0, transition: transition()}}
-                    >
-                        <p className="text-center text-lg">{error}</p>
-                    </motion.div>
-                    ) : (
-                    null
-                )}
+            {error ? (
+                <motion.div 
+                className="bg-red-200 mt-5 p-1 rounded-sm"
+                initial={{opacity: 0}}
+                animate={{opacity: 1, transition: transition()}}
+                exit={{opacity: 0, transition: transition()}}
+                >
+                    <p className="text-center text-lg">{message}</p>
+                </motion.div>
+                ) : (
+                null
+            )}
             
         </motion.form>
     )

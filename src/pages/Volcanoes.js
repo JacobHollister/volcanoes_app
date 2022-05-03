@@ -45,18 +45,20 @@ export default function Volcanoes () {
     return (
         <div className="h-screen w-screen flex flex-nowrap">
             <motion.div
+                key="infoDiv"
                 className="pt-16 h-full basis-1/2"
                 initial={{flexBasis: "100%"}}
                 animate={{flexBasis: "70%", transition: transition(0)}}
                 exit={{flexBasis: "100%", transition: transition(.6)}}
                 >
                     <motion.div
+                        key="info"
                         className="flex flex-col h-3/4 w-full"
                         initial={{opacity: 0}}
                         animate={{opacity: 1, transition: transition(.6)}}
                         exit={{opacity: 0, transition: transition(0)}}
                         >
-                            <AnimatePresence exitBeforeEnter>
+                            <AnimatePresence>
                                 <h1 className="text-center font-eczar text-5xl my-8">Volcano List</h1>
                                 {selectOptions ? (
                                     <select 
@@ -119,6 +121,7 @@ export default function Volcanoes () {
                                         <div className="pt-6 pl-6"
                                         >
                                             <motion.h2 
+                                                key="resultLabel"
                                                 className="font-eczar text-xl"
                                                 initial={{opacity: 0}}
                                                 animate={{opacity: 1, transition: transition(0)}}
@@ -148,7 +151,7 @@ export default function Volcanoes () {
             </motion.div>
             <motion.div 
                 className="h-full basis-1/2 overflow-hidden"
-                // Framer animation props
+                key="volcano"
                 initial={{flexBasis: 0, opacity: .5}}
                 animate={{flexBasis: "30%", opacity: 1, transition: transition(0)}}
                 exit={{opacity: .5, flexBasis: 0,  transition: transition(.6)}}

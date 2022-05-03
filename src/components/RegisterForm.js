@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAuth } from "../contexts/AuthContext";
 
 import transition from "../utils/transition"
 
 export default function RegisterForm ({close, isVisible}) {
     const navigate = useNavigate()
+    const {error, loggedIn, register, message, setError, registerSuccess} = useAuth()
 
-    const [ loading, setLoading ] = useState(false)
-    const [ error, setError ] = useState(false)
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -16,31 +16,19 @@ export default function RegisterForm ({close, isVisible}) {
 
     const {email, password} = formData
 
+    useEffect(() => {
+        if(loggedIn) {
+            close()
+            navigate('/volcanoes')
+        } else if(registerSuccess) {
+            close()
+            navigate('/login')
+        }
+    }, [loggedIn, close, navigate, registerSuccess])
+
     const registerHandler = (e) => {
         e.preventDefault()
-        const options = {
-            method: "POST",
-            headers: { accept: "application/json", "Content-Type": "application/json"},
-            body: JSON.stringify(formData)
-        }
-        const url = "http://sefdb02.qut.edu.au:3001/user/register"
-        setLoading(true)
-        fetch(url, options)
-            .then(res =>
-                res.json()
-            )
-            .then(res => 
-            {   
-                console.log(res)
-                setLoading(true)
-                if(res.error === true){
-                    setError(res.message)
-                } else if (res.message === 'User created'){
-                    console.log('user created')
-                    close()
-                    navigate('/login')
-                }
-            })
+        register(formData)
     }
 
     const cancelHandler = (e) => {
@@ -110,6 +98,19 @@ export default function RegisterForm ({close, isVisible}) {
                         Cancel
                 </button>
             </div>
+
+            {error ? (
+                <motion.div 
+                className="bg-red-200 mt-5 p-1 rounded-sm"
+                initial={{opacity: 0}}
+                animate={{opacity: 1, transition: transition()}}
+                exit={{opacity: 0, transition: transition()}}
+                >
+                    <p className="text-center text-lg">{message}</p>
+                </motion.div>
+                ) : (
+                null
+            )}
         </motion.form>
     )
 
