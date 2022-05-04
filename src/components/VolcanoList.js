@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import 'ag-grid-community/dist/styles/ag-grid.css'; // Core grid CSS, always needed
@@ -20,7 +20,7 @@ export default function VolcanoList ({country, populatedWithin}) {
         { headerName: "subregion", field: "subregion"}
     ], [])
     
-    const {loading, data: volcanoData, error} = useFetchVolcanoes(country, populatedWithin)
+    const {loading, data: volcanoData} = useFetchVolcanoes(country, populatedWithin)
 
     return (
         <motion.div

@@ -9,7 +9,6 @@ export function useFetch(url, options = {}) {
 
     
     useEffect(() => {
-        console.log("fetching from API", BASE_URL, url, options)
         fetch(BASE_URL + url, options)
             .then((res) =>
                 res.json()

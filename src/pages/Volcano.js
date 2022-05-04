@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Map, Marker } from "pigeon-maps"
 import { Bar } from 'react-chartjs-2';
@@ -29,13 +29,10 @@ ChartJS.register(
 
 
 export default function Volcano () {
-    const navigate = useNavigate()
     const volcanoID = useParams().id
     const { loggedIn, token} = useAuth()
 
-    const {loading, data: volcanoData, error} = useFetchVolcano(volcanoID, token)
-
-    console.log(volcanoData)
+    const {loading, data: volcanoData } = useFetchVolcano(volcanoID, token)
 
     return (
         <motion.div 
@@ -97,7 +94,10 @@ export default function Volcano () {
                                     <div className="relative flex w-full">
                                         { !loggedIn ? (
                                             <>
-                                                <div className="absolute top-0 bottom-0 left-0 right-0 bg-white opacity-60">
+                                                <div className="absolute top-0 bottom-0 left-0 right-0 bg-white/75 flex justify-center items-center">
+                                                    <div className="bg-gray-100 px-4 py-2 rounded-md">
+                                                        <p className="font-eczar text-2xl">Login to view this content</p>
+                                                    </div>
                                                 </div>
                                             </>
                                         ) : (
