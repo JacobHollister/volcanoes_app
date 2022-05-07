@@ -17,6 +17,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import Loading from "../components/Loading";
 
 ChartJS.register(
     CategoryScale,
@@ -57,7 +58,7 @@ export default function Volcano () {
                         exit={{opacity: 0, transition: transition()}}
                         >
                         { loading ? (
-                            <h1>loading...</h1>
+                            <Loading/>
                         ) : (
                             <>
                                 <h1

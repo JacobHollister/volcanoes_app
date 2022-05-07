@@ -10,6 +10,7 @@ import { useFetchVolcanoes } from '../hooks/useAPI';
 
 import transition from '../utils/transition';
 
+import Loading from './Loading';
 
 export default function VolcanoList ({country, populatedWithin}) {
     const navigate = useNavigate(0)
@@ -30,9 +31,10 @@ export default function VolcanoList ({country, populatedWithin}) {
             exit={{opacity: 0, transition: transition(0)}}
             className='ag-theme-alpine w-full h-3/4 p-3'>
             { loading ? (
-                loading
+                <Loading/>
             ) : (
                 <AgGridReact
+                    className=' shadow-lg'
                     onRowClicked={(e) => navigate(`/volcano/${e.data.id}`)}
                     columnDefs={columnDefs}
                     rowData={volcanoData}

@@ -9,6 +9,9 @@ module.exports = {
       backgroundImage: {
         'volcano_light_3': "url(/src/assets/volcano_light_3.jpg)",
       },
+      margin: {
+        '1/2': '1px',
+      }
     },
   },
   plugins: [],

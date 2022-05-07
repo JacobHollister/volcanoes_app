@@ -8,9 +8,10 @@ import { useFetchCountries } from "../hooks/useAPI";
 
 import volcano_light from "../assets/volcano_light_2.jpg"
 import VolcanoList from "../components/VolcanoList";
+import Loading from "../components/Loading";
 
 export default function Volcanoes () {
-    const {loading, data: countries } = useFetchCountries('/countries')
+    const {loading, data: countries, error } = useFetchCountries('/countries')
 
     const [selectedCountry, setSelectedCountry] = useState(null)
     const [selectedDistance, setSelectedDistance] = useState(null)
@@ -72,17 +73,23 @@ export default function Volcanoes () {
                         >
                             <AnimatePresence>
                                 <h1 className="text-center font-eczar text-5xl my-8">Volcano List</h1>
-                                <Select
-                                    isLoading={loading}
-                                    placeholder="-- Select Country --"
-                                    key="select"
-                                    className="mx-auto mb-4 w-72"
-                                    onChange={(e) => countryChangeHandler(e)}
-                                    options={countries.map(country => {
-                                            return { label: country, value: country}}
-                                        )}
-                                    styles={selectStyles}
-                                    /> 
+                                {!error && !loading ? (
+                                    <Select
+                                        isLoading={loading}
+                                        placeholder="-- Select Country --"
+                                        key="select"
+                                        className="mx-auto mb-4 w-72 shadow-lg"
+                                        onChange={(e) => countryChangeHandler(e)}
+                                        options={countries.map(country => {
+                                                return { label: country, value: country}}
+                                            )}
+                                        styles={selectStyles}
+                                        /> 
+                                ) : (
+                                    <h1>
+                                        {error}
+                                    </h1>
+                                )}
                                 { selectedCountry &&
                                     <motion.div
                                     key="distanceSelect"
@@ -92,7 +99,7 @@ export default function Volcanoes () {
                                     className="h-14"
                                     >
                                         <Select
-                                        className="mx-auto mb-4 w-72"                                        
+                                        className="mx-auto mb-4 w-72 shadow-lg"                                        
                                         onChange={(e) => distanceChangeHandler(e)}
                                         name={"distanceToPopulation"}
                                         id={"distanceToPopulation"}
@@ -112,7 +119,7 @@ export default function Volcanoes () {
                                     exit={{opacity: 0, transition: transition(0)}}
                                     >
                                         <button
-                                        className="w-72 h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                        className="shadow-xl w-72 h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                         onClick={() => searchHandler()}
                                         >Search</button>
                                     </motion.div>
@@ -144,6 +151,9 @@ export default function Volcanoes () {
                                         </div>
                                         <VolcanoList country={tableData.country} populatedWithin={tableData.populatedWithin}/>
                                     </div>
+                                }
+                                {
+                                    loading && <Loading/>
                                 }
                             </AnimatePresence>
                     </motion.div>

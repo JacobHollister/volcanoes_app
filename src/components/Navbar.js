@@ -21,7 +21,7 @@ export default function Navbar() {
             { !isVisible && (
             <motion.div 
                 key="nav"
-                className="px-3 h-11 w-screen content-center fixed bg-slate-50 z-10 flex justify-center border-2 border-slate-200"
+                className="px-3 h-11 w-screen content-center fixed bg-slate-50 z-10 flex justify-center border-2 border-slate-200 shadow-lg"
                 initial={{transform: "translateY(-100%)"}}
                 animate={{transform: "translateY(0%)", transition: transition(1.3)}}
                 exit={{transform: "translateY(-100%)", transition: transition(0)}}
