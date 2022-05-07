@@ -36,12 +36,14 @@ export default function Volcano () {
 
     return (
         <motion.div 
+            key="volcano_pic"
             className="bg-volcano_light_3 bg-cover w-screen h-screen flex justify-center"
             initial={{opacity: 0}}
             animate={{opacity: 1, transition: transition()}}
             exit={{opacity: 0, transition: transition(1)}}
             >
             <motion.div
+                key={"volcano_info"}
                 style={{height: "800px"}}
                 className="bg-white pt-10 w-3/4"
                 initial={{height: "0px"}}
@@ -49,6 +51,7 @@ export default function Volcano () {
                 exit={{height: "0px", transition: transition(.6)}}
                 >
                     <motion.div
+                        key="info_items"
                         initial={{opacity: 0}}
                         animate={{opacity: 1, transition: transition(1)}}
                         exit={{opacity: 0, transition: transition()}}

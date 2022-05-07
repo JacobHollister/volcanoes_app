@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion";
 
 import transition from "../utils/transition"
@@ -10,8 +9,6 @@ import volcano_light from "../assets/volcano_light_2.jpg"
 import VolcanoList from "../components/VolcanoList";
 
 export default function Volcanoes () {
-    const navigate = useNavigate()
-
     const {loading, data: countries, error} = useFetchCountries('/countries')
 
     const [selectedCountry, setSelectedCountry] = useState(null)
@@ -60,8 +57,9 @@ export default function Volcanoes () {
                         >
                             <AnimatePresence>
                                 <h1 className="text-center font-eczar text-5xl my-8">Volcano List</h1>
-                                {selectOptions ? (
+                                {selectOptions && 
                                     <select 
+                                    key="select"
                                     onChange={(e) => {countryChangeHandler(e)}}
                                     name={'country'} 
                                     id={"country"} 
@@ -71,10 +69,8 @@ export default function Volcanoes () {
                                         <option disabled value="default"> -- Country -- </option>
                                         {selectOptions}
                                     </select>
-                                ) : (
-                                    null
-                                )} 
-                                { selectedCountry ? (
+                                } 
+                                { selectedCountry &&
                                     <motion.div
                                     key="distanceSelect"
                                     initial={{opacity: 0}}
@@ -97,10 +93,8 @@ export default function Volcanoes () {
                                             <option value={"100km"}>100km</option>
                                         </select>
                                     </motion.div>
-                                ) : (
-                                    null
-                                )}
-                                { selectedDistance ? (
+                                }
+                                { selectedDistance &&
                                     <motion.div
                                     key="searchButton"
                                     className="h-14 flex justify-center"
@@ -113,11 +107,9 @@ export default function Volcanoes () {
                                         onClick={() => searchHandler()}
                                         >Search</button>
                                     </motion.div>
-                                ) : (
-                                    null
-                                )}
-                                { showTable ? (
-                                    <>
+                                }
+                                { showTable &&
+                                    <div key="results" className="h-full">
                                         <div className="pt-6 pl-6"
                                         >
                                             <motion.h2 
@@ -130,7 +122,7 @@ export default function Volcanoes () {
                                                     Showing results for 
                                                 </motion.h2>
                                             <motion.h2 
-                                                key={tableData.country + tableData.populatedWithin}
+                                                key="searchInfo"
                                                 className="font-eczar text-xl"
                                                 initial={{opacity: 0}}
                                                 animate={{opacity: 1, transition: transition(0)}}
@@ -142,10 +134,8 @@ export default function Volcanoes () {
                                                 </motion.h2>
                                         </div>
                                         <VolcanoList country={tableData.country} populatedWithin={tableData.populatedWithin}/>
-                                    </>
-                                ) : (
-                                    null
-                                )}
+                                    </div>
+                                }
                             </AnimatePresence>
                     </motion.div>
             </motion.div>
@@ -157,6 +147,7 @@ export default function Volcanoes () {
                 exit={{opacity: .5, flexBasis: 0,  transition: transition(.6)}}
                 > 
                     <motion.img 
+                        key="image"
                         style={{objectPosition: "55% 0"}}
                         className="object-cover h-full w-full scale-100" 
                         src={volcano_light} 

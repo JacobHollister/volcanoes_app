@@ -86,6 +86,7 @@ export default function Home () {
                 exit={{opacity: .5, flexBasis: 0, transition: transition(.6)}}
                 transition={transition()}> 
                     <motion.img 
+                        key="2"
                         className="object-cover h-full w-full scale-150" 
                         src={volcano_light} 
                         alt="volcano"

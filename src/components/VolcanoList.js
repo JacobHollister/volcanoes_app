@@ -24,7 +24,7 @@ export default function VolcanoList ({country, populatedWithin}) {
 
     return (
         <motion.div
-            key={country + populatedWithin} 
+            key="table"
             initial={{opacity: 0}}
             animate={{opacity: 1, transition: transition(.2)}}
             exit={{opacity: 0, transition: transition(0)}}

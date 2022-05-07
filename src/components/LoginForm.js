@@ -97,6 +97,7 @@ export default function LoginForm ({close, isVisible}) {
             
             {error ? (
                 <motion.div 
+                key={message}
                 className="bg-red-200 mt-5 p-1 rounded-sm"
                 initial={{opacity: 0}}
                 animate={{opacity: 1, transition: transition()}}
