@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Select from 'react-select';
 
 import transition from "../utils/transition"
 
@@ -9,7 +10,7 @@ import volcano_light from "../assets/volcano_light_2.jpg"
 import VolcanoList from "../components/VolcanoList";
 
 export default function Volcanoes () {
-    const {loading, data: countries, error} = useFetchCountries('/countries')
+    const {loading, data: countries } = useFetchCountries('/countries')
 
     const [selectedCountry, setSelectedCountry] = useState(null)
     const [selectedDistance, setSelectedDistance] = useState(null)
@@ -17,11 +18,11 @@ export default function Volcanoes () {
     const [showTable, setShowTable] = useState(false)
 
     const countryChangeHandler = (e) => {
-        setSelectedCountry(e.target.value)
+        setSelectedCountry(e.value)
     }
 
     const distanceChangeHandler = (e) => {
-        setSelectedDistance(e.target.value)
+        setSelectedDistance(e.value)
     }
 
     const searchHandler = () => {
@@ -29,15 +30,29 @@ export default function Volcanoes () {
         setShowTable(true)
     }
 
-    let selectOptions
-    
-    if ((!loading || !error) && countries.length > 0) {
-        selectOptions = countries.map((country) => {
-            return (
-                <option value={country} key={country}>{country}</option>
-            )
-        })
+    const selectStyles = {
+        menu: (provided) => ({
+            ...provided,
+            border: "1px solid rgb(156, 163, 175)"
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: "black"
+        }),
+        dropdownIndicator: (provided) => ({
+            ...provided,
+            color: "black"
+        }),
+        control: (provided) => ({
+            ...provided,
+            border: "1px solid rgb(156, 163, 175)",
+            background: "rgb(249, 250, 251)",
+        }),
     }
+
+    const distanceOptions = ["none", "5km", "10km", "30km", "100km"].map(country => {
+                                            return { label: country, value: country}}
+                                        )
 
     return (
         <div className="h-screen w-screen flex flex-nowrap">
@@ -57,19 +72,17 @@ export default function Volcanoes () {
                         >
                             <AnimatePresence>
                                 <h1 className="text-center font-eczar text-5xl my-8">Volcano List</h1>
-                                {selectOptions && 
-                                    <select 
+                                <Select
+                                    isLoading={loading}
+                                    placeholder="-- Select Country --"
                                     key="select"
-                                    onChange={(e) => {countryChangeHandler(e)}}
-                                    name={'country'} 
-                                    id={"country"} 
-                                    defaultValue={"default"}
-                                    className="mx-auto mb-4 bg-gray-50 border border-gray-400 text-gray-900 text-md rounded focus:ring-blue-500 focus:border-blue-500 block w-72 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                        <option disabled value="default"> -- Country -- </option>
-                                        {selectOptions}
-                                    </select>
-                                } 
+                                    className="mx-auto mb-4 w-72"
+                                    onChange={(e) => countryChangeHandler(e)}
+                                    options={countries.map(country => {
+                                            return { label: country, value: country}}
+                                        )}
+                                    styles={selectStyles}
+                                    /> 
                                 { selectedCountry &&
                                     <motion.div
                                     key="distanceSelect"
@@ -78,20 +91,16 @@ export default function Volcanoes () {
                                     exit={{opacity: 0, transition: transition(0)}}
                                     className="h-14"
                                     >
-                                        <select
-                                        className="mx-auto mb-4 bg-gray-50 border border-gray-400 text-gray-900 text-md rounded focus:ring-blue-500 focus:border-blue-500 block w-72 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        <Select
+                                        className="mx-auto mb-4 w-72"                                        
                                         onChange={(e) => distanceChangeHandler(e)}
                                         name={"distanceToPopulation"}
                                         id={"distanceToPopulation"}
-                                        defaultValue={"default"}
-                                        >
-                                            <option disabled value="default"> -- Closest Population Distance -- </option>
-                                            <option value={"none"}>none</option>
-                                            <option value={"5km"}>5km</option>
-                                            <option value={"10km"}>10km</option>
-                                            <option value={"30km"}>30km</option>
-                                            <option value={"100km"}>100km</option>
-                                        </select>
+                                        placeholder={"-- Select Popultated Within --"}
+                                        styles={selectStyles}
+                                        options={distanceOptions}
+                                        isSearchable={false}
+                                        />
                                     </motion.div>
                                 }
                                 { selectedDistance &&

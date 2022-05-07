@@ -7,7 +7,7 @@ import transition from "../utils/transition"
 export default function Navbar() {
     const location = useLocation().pathname
     const navigate = useNavigate()
-    const { loggedIn, logout} = useAuth()
+    const { loggedIn, logout } = useAuth()
 
     const isVisible = ['/', '/login', '/register'].includes(location)
 
