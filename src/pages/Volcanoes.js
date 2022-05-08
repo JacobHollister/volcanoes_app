@@ -5,12 +5,16 @@ import Select from 'react-select';
 import transition from "../utils/transition"
 
 import { useFetchCountries } from "../hooks/useAPI";
+import{ useTheme } from "../contexts/ThemeContext"
 
-import volcano_light from "../assets/volcano_light_2.jpg"
 import VolcanoList from "../components/VolcanoList";
 import Loading from "../components/Loading";
 
+import volcano_light from "../assets/volcano_light_2.jpg"
+import volcano_dark from "../assets/volcano_dark_2.jpg"
+
 export default function Volcanoes () {
+    const {darkMode} = useTheme()
     const {loading, data: countries, error } = useFetchCountries('/countries')
 
     const [selectedCountry, setSelectedCountry] = useState(null)
@@ -34,20 +38,34 @@ export default function Volcanoes () {
     const selectStyles = {
         menu: (provided) => ({
             ...provided,
-            border: "1px solid rgb(156, 163, 175)"
+            border: "1px solid rgb(156, 163, 175)",
+            color: darkMode ? "white" : "black",
+            background: darkMode ? "rgb(30, 41, 59)": "rgb(249, 250, 251)",
         }),
         placeholder: (provided) => ({
             ...provided,
-            color: "black"
+            color: darkMode ? "white" : "black"
         }),
         dropdownIndicator: (provided) => ({
             ...provided,
-            color: "black"
+            color: darkMode ? "white" : "black"
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: darkMode ? "white" : "black"
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            "&:hover": {
+                background: darkMode ? "rgb(71, 85, 105)": null,
+            }
+
         }),
         control: (provided) => ({
             ...provided,
             border: "1px solid rgb(156, 163, 175)",
-            background: "rgb(249, 250, 251)",
+            background: darkMode ? "rgb(30, 41, 59)" : "rgb(249, 250, 251)",
+            color: darkMode ? "white" : "black"
         }),
     }
 
@@ -56,7 +74,7 @@ export default function Volcanoes () {
                                         )
 
     return (
-        <div className="h-screen w-screen flex flex-nowrap">
+        <div className="h-screen w-screen flex flex-nowrap dark:bg-black bg-white">
             <motion.div
                 key="infoDiv"
                 className="pt-16 h-full basis-1/2"
@@ -72,7 +90,7 @@ export default function Volcanoes () {
                         exit={{opacity: 0, transition: transition(0)}}
                         >
                             <AnimatePresence>
-                                <h1 className="text-center font-eczar text-5xl my-8">Volcano List</h1>
+                                <h1 className="text-center font-eczar text-5xl my-8 dark:text-white">Volcano List</h1>
                                 {!error && !loading ? (
                                     <Select
                                         isLoading={loading}
@@ -125,7 +143,7 @@ export default function Volcanoes () {
                                     </motion.div>
                                 }
                                 { showTable &&
-                                    <div key="results" className="h-full">
+                                    <div key="results" className="h-full dark:text-white">
                                         <div className="pt-6 pl-6"
                                         >
                                             <motion.h2 
@@ -165,17 +183,31 @@ export default function Volcanoes () {
                 animate={{flexBasis: "30%", opacity: 1, transition: transition(0)}}
                 exit={{opacity: .5, flexBasis: 0,  transition: transition(.6)}}
                 > 
-                    <motion.img 
-                        key="image"
-                        style={{objectPosition: "55% 0"}}
-                        className="object-cover h-full w-full scale-100" 
-                        src={volcano_light} 
-                        alt="volcano"
-                        initial={{}}
-                        animate={{}}
-                        exit={{}}
-                        transition={transition()}
-                        />
+                    { darkMode ? (
+                        <motion.img 
+                            key="volcano_dark_2"
+                            style={{objectPosition: "75% 0"}}
+                            className="object-cover h-full w-full scale-100" 
+                            src={volcano_dark} 
+                            alt="volcano"
+                            initial={{}}
+                            animate={{}}
+                            exit={{}}
+                            transition={transition()}
+                            />
+                    ) : (
+                        <motion.img 
+                            key="volcano_light_2"
+                            style={{objectPosition: "55% 0"}}
+                            className="object-cover h-full w-full scale-100" 
+                            src={volcano_light} 
+                            alt="volcano"
+                            initial={{}}
+                            animate={{}}
+                            exit={{}}
+                            transition={transition()}
+                            />
+                    )}
             </motion.div>
         </div>
     )

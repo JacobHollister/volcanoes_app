@@ -38,7 +38,7 @@ export default function Volcano () {
     return (
         <motion.div 
             key="volcano_pic"
-            className="bg-volcano_light_3 bg-cover w-screen h-screen flex justify-center"
+            className="bg-volcano_light_3 dark:bg-volcano_dark_3 bg-cover w-screen h-screen flex justify-center"
             initial={{opacity: 0}}
             animate={{opacity: 1, transition: transition()}}
             exit={{opacity: 0, transition: transition(1)}}
@@ -46,7 +46,7 @@ export default function Volcano () {
             <motion.div
                 key={"volcano_info"}
                 style={{height: "800px"}}
-                className="bg-white pt-10 w-3/4"
+                className="bg-white pt-10 w-3/4 dark:bg-black dark:text-white"
                 initial={{height: "0px"}}
                 animate={{height: "800px", transition: transition(.5)}}
                 exit={{height: "0px", transition: transition(.6)}}
@@ -96,16 +96,14 @@ export default function Volcano () {
                                         </Map>
                                     </div>
                                     <div className="relative flex w-full">
-                                        { !loggedIn ? (
+                                        { !loggedIn && (
                                             <>
-                                                <div className="absolute top-0 bottom-0 left-0 right-0 bg-white/75 flex justify-center items-center">
-                                                    <div className="bg-gray-100 px-4 py-2 rounded-md">
+                                                <div className="absolute top-0 bottom-0 left-0 right-0 bg-white/75 dark:bg-black/75 flex justify-center items-center">
+                                                    <div className="bg-gray-100 px-4 py-2 rounded-md dark:bg-slate-800">
                                                         <p className="font-eczar text-2xl">Login to view this content</p>
                                                     </div>
                                                 </div>
                                             </>
-                                        ) : (
-                                            null
                                         )}
                                         {/* populationWithin */}
                                         <div

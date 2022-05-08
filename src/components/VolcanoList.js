@@ -1,10 +1,12 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../contexts/ThemeContext';
 
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import 'ag-grid-community/dist/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'; // Optional theme CSS
+import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css'; // Optional theme CSS
 
 import { useFetchVolcanoes } from '../hooks/useAPI';
 
@@ -13,6 +15,7 @@ import transition from '../utils/transition';
 import Loading from './Loading';
 
 export default function VolcanoList ({country, populatedWithin}) {
+    const { darkMode } = useTheme()
     const navigate = useNavigate(0)
 
     const columnDefs = useMemo(() => [
@@ -34,7 +37,7 @@ export default function VolcanoList ({country, populatedWithin}) {
                 <Loading/>
             ) : (
                 <AgGridReact
-                    className=' shadow-lg'
+                    className={darkMode ? "ag-theme-alpine-dark" : "ag-theme-alpine shadow-lg"}
                     onRowClicked={(e) => navigate(`/volcano/${e.data.id}`)}
                     columnDefs={columnDefs}
                     rowData={volcanoData}
