@@ -8,10 +8,12 @@ export function useFetch(url, options = {}) {
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
 
+    
+
     useEffect(() => {
         if(fetchedDataUrl.current !== url){
             setLoading(true)
-            fetch(BASE_URL + url, options)
+            fetch(BASE_URL + url, {...options})
                 .then((res) =>{
                     return res.json()
                 })

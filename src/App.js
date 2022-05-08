@@ -2,17 +2,25 @@ import { BrowserRouter as Router} from 'react-router-dom'
 
 import AnimatedRoutes from './AnimatedRoutes';
 import Navbar from './components/Navbar';
+import DarkModeToggle from './components/DarkModeToggle';
 
 import './App.css';
+
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext'
+
+
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Navbar/>
-        <AnimatedRoutes />
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <Navbar/>
+          <AnimatedRoutes />
+        </Router>
+        <DarkModeToggle/> 
+      </ThemeProvider>
     </AuthProvider>
   );
 }
