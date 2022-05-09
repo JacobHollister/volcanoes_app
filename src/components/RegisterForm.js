@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 
+import Loading from "./Loading";
+
 import transition from "../utils/transition"
 
 export default function RegisterForm ({close, isVisible}) {
     const navigate = useNavigate()
-    const {error, loggedIn, register, message, setError, registerSuccess} = useAuth()
+    const {error, loggedIn, register, message, setError, registerSuccess, loading} = useAuth()
 
     const [formData, setFormData] = useState({
         email: '',
@@ -99,7 +101,9 @@ export default function RegisterForm ({close, isVisible}) {
                 </button>
             </div>
 
-            {error ? (
+            { loading &&  <Loading/>}
+
+            {error && (
                 <motion.div 
                 key={message}
                 className="bg-red-200 mt-5 p-1 rounded-sm"
@@ -109,15 +113,13 @@ export default function RegisterForm ({close, isVisible}) {
                 >
                     <p className="text-center text-lg">{message}</p>
                 </motion.div>
-                ) : (
-                null
-            )}
+                )}
         </motion.form>
     )
 
     return(
         <>
-            {isVisible ? form : null}
+            {isVisible && form}
         </>
     )
 }

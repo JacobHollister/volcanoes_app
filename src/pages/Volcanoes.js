@@ -9,6 +9,7 @@ import{ useTheme } from "../contexts/ThemeContext"
 
 import VolcanoList from "../components/VolcanoList";
 import Loading from "../components/Loading";
+import Error from "../components/Error";
 
 import volcano_light from "../assets/volcano_light_2.jpg"
 import volcano_dark from "../assets/volcano_dark_2.jpg"
@@ -91,7 +92,7 @@ export default function Volcanoes () {
                         >
                             <AnimatePresence>
                                 <h1 className="text-center font-eczar text-5xl my-8 dark:text-white">Volcano List</h1>
-                                {!error && !loading ? (
+                                {!error && !loading && (
                                     <Select
                                         isLoading={loading}
                                         placeholder="-- Select Country --"
@@ -103,11 +104,10 @@ export default function Volcanoes () {
                                             )}
                                         styles={selectStyles}
                                         /> 
-                                ) : (
-                                    <h1>
-                                        {error}
-                                    </h1>
                                 )}
+                                {
+                                    error && <Error error={error}/>
+                                }
                                 { selectedCountry &&
                                     <motion.div
                                     key="distanceSelect"

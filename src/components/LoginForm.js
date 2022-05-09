@@ -5,9 +5,11 @@ import { motion } from "framer-motion";
 import transition from "../utils/transition";
 import { useAuth } from "../contexts/AuthContext";
 
+import Loading from "./Loading";
+
 export default function LoginForm ({close, isVisible}) {
     const navigate = useNavigate()
-    const {error, loggedIn, login, message, setError} = useAuth()
+    const {error, loggedIn, login, message, setError, loading} = useAuth()
 
     const [formData, setFormData] = useState({
         email: '',
@@ -94,8 +96,9 @@ export default function LoginForm ({close, isVisible}) {
                         Cancel
                 </button>
             </div>
+            { loading &&  <Loading/>}
             
-            {error ? (
+            {error && (
                 <motion.div 
                 key={message}
                 className="bg-red-200 mt-5 p-1 rounded-sm"
@@ -105,16 +108,14 @@ export default function LoginForm ({close, isVisible}) {
                 >
                     <p className="text-center text-lg">{message}</p>
                 </motion.div>
-                ) : (
-                null
-            )}
+                )}
             
         </motion.form>
     )
 
     return(
         <>
-            {isVisible ? form : null}
+            {isVisible && form }
         </>
     )
 }

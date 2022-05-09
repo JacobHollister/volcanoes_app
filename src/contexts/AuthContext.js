@@ -81,7 +81,7 @@ export function AuthProvider({children}) {
                 })
                 .catch((e) => {
                     setError(true);
-                    setMessage(e.response.data.message);
+                    setMessage(e.response ? e.response.data.message : e.message);
                 })
                 .finally(() => {
                         setLoading(false);
@@ -106,7 +106,7 @@ export function AuthProvider({children}) {
                 })
                 .catch((e) => {
                     setError(true);
-                    setMessage(e.response.data.message);
+                    setMessage(e.response ? e.response.data.message : e.message);
                 })
                 .finally(() => {
                         setLoading(false);

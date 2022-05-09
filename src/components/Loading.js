@@ -2,7 +2,7 @@ import { motion } from "framer-motion"
 
 export default function Loading() {
     return (
-        <div className="mx-auto mt-10 w-64 h-64 border-2 flex justify-center items-center rounded-lg overflow-hidden bg-slate-50 border-blue-300 shadow-xl">
+        <div className="mx-auto mt-10 w-64 h-64 border-2 flex justify-center items-center rounded-lg overflow-hidden bg-slate-50 border-blue-300 shadow-xl dark:bg-slate-700 dark:text-white">
         {"loading...".split("").map((letter, ind) => {
             return <motion.h3
                         key={letter} 

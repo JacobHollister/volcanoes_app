@@ -14,12 +14,10 @@ export function useFetch(url, config) {
             setLoading(true)
             axios({...config, timeout: 10000})
                 .then((result) => {
-                    console.log(result)
                     setData(result.data);
                 })
                 .catch((e) => {
-                    console.log(e)
-                    setError(e.message);
+                    setError(e.response ? e.response.data.message : e.message);
                 })
                 .finally(() => {
                     setLoading(false);

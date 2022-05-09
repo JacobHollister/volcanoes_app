@@ -18,6 +18,7 @@ import {
     Legend,
 } from 'chart.js';
 import Loading from "../components/Loading";
+import Error from "../components/Error"
 
 ChartJS.register(
     CategoryScale,
@@ -33,7 +34,7 @@ export default function Volcano () {
     const volcanoID = useParams().id
     const { loggedIn, token} = useAuth()
 
-    const {loading, data: volcanoData } = useFetchVolcano(volcanoID, token)
+    const {loading, data: volcanoData, error } = useFetchVolcano(volcanoID, token)
 
     return (
         <motion.div 
@@ -57,9 +58,9 @@ export default function Volcano () {
                         animate={{opacity: 1, transition: transition(1)}}
                         exit={{opacity: 0, transition: transition()}}
                         >
-                        { loading ? (
-                            <Loading/>
-                        ) : (
+                        { loading && <Loading/>}
+                        { error && <Error error={error}/> }
+                        { !loading && !error && (
                             <>
                                 <h1
                                 className="text-center font-eczar text-4xl mb-1 mt-5"

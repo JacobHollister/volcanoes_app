@@ -13,6 +13,7 @@ import { useFetchVolcanoes } from '../hooks/useAPI';
 import transition from '../utils/transition';
 
 import Loading from './Loading';
+import Error from './Error';
 
 export default function VolcanoList ({country, populatedWithin}) {
     const { darkMode } = useTheme()
@@ -24,7 +25,7 @@ export default function VolcanoList ({country, populatedWithin}) {
         { headerName: "subregion", field: "subregion"}
     ], [])
     
-    const {loading, data: volcanoData} = useFetchVolcanoes(country, populatedWithin)
+    const {loading, data: volcanoData, error} = useFetchVolcanoes(country, populatedWithin)
 
     return (
         <motion.div
@@ -33,9 +34,9 @@ export default function VolcanoList ({country, populatedWithin}) {
             animate={{opacity: 1, transition: transition(.2)}}
             exit={{opacity: 0, transition: transition(0)}}
             className='ag-theme-alpine w-full h-3/4 p-3'>
-            { loading ? (
-                <Loading/>
-            ) : (
+            { loading && <Loading/>}
+            { error && <Error error={error}/> }
+            { !loading && !error && (
                 <AgGridReact
                     className={darkMode ? "ag-theme-alpine-dark" : "ag-theme-alpine shadow-lg"}
                     onRowClicked={(e) => navigate(`/volcano/${e.data.id}`)}
