@@ -1,14 +1,15 @@
 import { createContext, useContext, useState } from "react";
+import axios from "axios"
 
-const user = JSON.parse(localStorage.getItem('user'))
+const token = JSON.parse(localStorage.getItem('token'))
 
 const initialState = {
             loading: false,
-            loggedIn: user ? true : false,
+            loggedIn: token ? true: false,
             registerSuccess: false,
             error: false,
             message: "null",
-            token: user ? user.token : null
+            token: token ? token.token : null
         }
 
 const AuthContext = createContext()
@@ -57,61 +58,59 @@ export function AuthProvider({children}) {
     }
 
     const logout = () => {
-        localStorage.removeItem("user")
-        setAuthState(initialState)
+        localStorage.removeItem("token")
+        setLoggedIn(false)
+        setLoading(false)
+        setToken(null)
     }
 
 
     const register = (formData) => {
-        const options = {
-            method: "POST",
-            headers: { accept: "application/json", "Content-Type": "application/json"},
-            body: JSON.stringify(formData)
-        }
         const url = "http://sefdb02.qut.edu.au:3001/user/register"
 
+        const config = {
+            url,
+            method: 'post', 
+            data: formData
+        }
+
         setLoading(true)
-        fetch(url, options)
-            .then(res =>
-                res.json()
-            )
-            .then(res => 
-            {   
-                if(res.error === true){
-                    setError(true)
-                    setMessage(res.message)
-                } else {
+        axios({...config, timeout: 10000})
+                .then((result) => {
                     setRegisterSuccess(true)
-                }
-                setLoading(true)
-            })
+                })
+                .catch((e) => {
+                    setError(true);
+                    setMessage(e.response.data.message);
+                })
+                .finally(() => {
+                        setLoading(false);
+                });
     }
 
     const login = (formData) => {
-        const options = {
-            method: "POST",
-            headers: { accept: "application/json", "Content-Type": "application/json"},
-            body: JSON.stringify(formData)
-        }
         const url = "http://sefdb02.qut.edu.au:3001/user/login"
 
+        const config = {
+            url,
+            method: 'post', 
+            data: formData
+        }
+
         setLoading(true)
-        fetch(url, options)
-            .then(res =>
-                res.json()
-            )
-            .then(res => 
-            {   
-                if(res.error === true){
-                    setError(true)
-                    setMessage(res.message)
-                } else {
-                    localStorage.setItem('token', JSON.stringify(res))
-                    setToken(res.token)
+        axios({...config, timeout: 10000})
+                .then((result) => {
+                    localStorage.setItem('token', JSON.stringify(result.data))
+                    setToken(result.data.token)
                     setLoggedIn(true)
-                }
-                setLoading(true)
-            })
+                })
+                .catch((e) => {
+                    setError(true);
+                    setMessage(e.response.data.message);
+                })
+                .finally(() => {
+                        setLoading(false);
+                });
     }
 
     return (

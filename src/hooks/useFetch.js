@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "axios"
 
-const BASE_URL = "http://sefdb02.qut.edu.au:3001"
-
-export function useFetch(url, options = {}) {
+export function useFetch(url, config) {
     const fetchedDataUrl = useRef(null);
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -13,22 +12,21 @@ export function useFetch(url, options = {}) {
     useEffect(() => {
         if(fetchedDataUrl.current !== url){
             setLoading(true)
-            fetch(BASE_URL + url, {...options})
-                .then((res) =>{
-                    return res.json()
-                })
-                .then((data) => {
-                    setData(data);
+            axios({...config, timeout: 10000})
+                .then((result) => {
+                    console.log(result)
+                    setData(result.data);
                 })
                 .catch((e) => {
-                    setError(e);
+                    console.log(e)
+                    setError(e.message);
                 })
                 .finally(() => {
                     setLoading(false);
                     fetchedDataUrl.current = url
                 });
         }
-    }, [url, options]);
+    }, [url, config]);
     
     return {
         loading,
