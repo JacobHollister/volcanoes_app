@@ -11,7 +11,7 @@ export default function Loading() {
                         transition={{ delay: .3 * ind, duration: 5, times: [0, .2, .8, 1], repeat: Infinity, repeatDelay: 2}}
                         >
                             {letter}
-                        </motion.h3>
+                    </motion.h3>
         })}
     </div>
     )

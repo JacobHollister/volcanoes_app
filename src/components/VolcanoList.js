@@ -20,9 +20,9 @@ export default function VolcanoList ({country, populatedWithin}) {
     const navigate = useNavigate(0)
 
     const columnDefs = useMemo(() => [
-        { headerName: "name", field: "name"},
-        { headerName: "region", field: "region"},
-        { headerName: "subregion", field: "subregion"}
+        { headerName: "name", field: "name", sortable: true, filter: 'agTextColumnFilter'},
+        { headerName: "region", field: "region", sortable: true},
+        { headerName: "subregion", field: "subregion", sortable: true}
     ], [])
     
     const {loading, data: volcanoData, error} = useFetchVolcanoes(country, populatedWithin)

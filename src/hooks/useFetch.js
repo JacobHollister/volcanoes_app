@@ -7,8 +7,6 @@ export function useFetch(url, config) {
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
 
-    
-
     useEffect(() => {
         if(fetchedDataUrl.current !== url){
             setLoading(true)

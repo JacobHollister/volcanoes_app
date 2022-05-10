@@ -19,6 +19,7 @@ import {
 } from 'chart.js';
 import Loading from "../components/Loading";
 import Error from "../components/Error"
+import { useTheme } from "../contexts/ThemeContext";
 
 ChartJS.register(
     CategoryScale,
@@ -33,6 +34,7 @@ ChartJS.register(
 export default function Volcano () {
     const volcanoID = useParams().id
     const { loggedIn, token} = useAuth()
+    const { darkMode } = useTheme()
 
     const {loading, data: volcanoData, error } = useFetchVolcano(volcanoID, token)
 
@@ -126,7 +128,30 @@ export default function Volcano () {
                                         >
                                             <div className="h-full">
                                                 <Bar
-                                                    options={{maintainAspectRatio: false}}
+                                                
+                                                    options={{
+                                                        maintainAspectRatio: false,
+                                                            plugins: {
+                                                                legend: {
+                                                                    labels: {
+                                                                        color: darkMode ? "white" : "black" 
+                                                                    }
+                                                                }
+                                                            },
+                                                        scales: {
+                                                            yAxes :{
+                                                                ticks: {
+                                                                    color: darkMode ? "white" : "black"
+                                                                } 
+                                                            },
+                                                            XAxes :{
+                                                                ticks: {
+                                                                    color: darkMode ? "white" : "black"
+                                                                } 
+                                                            }
+                                                            
+                                                        }
+                                                    }}
                                                     data={{
                                                         labels: ["5km", "10km", "30km", "100km"],
                                                         datasets: [{
@@ -137,7 +162,7 @@ export default function Volcano () {
                                                                 volcanoData.population_30km,
                                                                 volcanoData.population_100km
                                                             ],
-                                                            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                                                            backgroundColor: 'rgb(53, 162, 235)',
                                                         }]
                                                     }}
                                                     />

@@ -55,7 +55,7 @@ export default function Volcanoes () {
             ...provided,
             color: darkMode ? "white" : "black"
         }),
-        option: (provided, state) => ({
+        option: (provided) => ({
             ...provided,
             "&:hover": {
                 background: darkMode ? "rgb(71, 85, 105)": null,

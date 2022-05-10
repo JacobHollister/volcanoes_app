@@ -82,7 +82,7 @@ export default function Home () {
     }
 
     return (
-        <div className="h-screen w-screen flex flex-nowrap">
+        <div className="h-screen w-screen flex flex-nowrap dark:bg-black">
             <motion.div 
                 className="h-full basis-1/2 overflow-hidden"
                 initial={{opacity: .5, flexBasis: 0}}

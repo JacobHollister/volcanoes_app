@@ -16,8 +16,6 @@ export default function DarkModeToggle () {
     return (
         <div onClick={() => toggleTheme()} className='transition fixed bottom-10 right-10 h-12 w-24 bg-blue-100 border-2 border-slate-900 dark:border-white dark:bg-slate-700 rounded-full overflow-hidden'>
             <div className='w-full h-full relative flex justify-between'>
-            {/* <img src={sun} alt="sun" className='p-4 z-10'/>
-            <img src={moon} alt="moon" className='p-4 z-10'/> */}
             <div className="z-10 w-16">
                 <FaSun className='w-full h-full p-3 text-white transition-all'/>
             </div>
