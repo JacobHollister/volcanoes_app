@@ -4,8 +4,6 @@ import AnimatedRoutes from './AnimatedRoutes';
 import Navbar from './components/Navbar';
 import DarkModeToggle from './components/DarkModeToggle';
 
-import './App.css';
-
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext'
 
