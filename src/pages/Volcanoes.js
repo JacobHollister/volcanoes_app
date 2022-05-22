@@ -75,7 +75,7 @@ export default function Volcanoes () {
                                         )
 
     return (
-        <div className="h-screen w-screen flex flex-nowrap dark:bg-black bg-white">
+        <div key="infoContainer" className="h-screen w-screen flex flex-nowrap dark:bg-black bg-white">
             <motion.div
                 key="infoDiv"
                 className="pt-16 h-full basis-1/2"
@@ -171,7 +171,7 @@ export default function Volcanoes () {
                                     </div>
                                 }
                                 {
-                                    loading && <Loading/>
+                                    loading && <Loading key="loading"/>
                                 }
                             </AnimatePresence>
                     </motion.div>
